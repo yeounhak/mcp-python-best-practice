@@ -19,7 +19,7 @@ class MCPChatBot:
         
         # 사용 가능한 도구들 가져오기
         tools_response = await self.mcp_client.list_tools()
-        self.available_tools = tools_response.tools
+        self.available_tools = tools_response
         
         print(f"🔧 사용 가능한 도구들: {[tool.name for tool in self.available_tools]}")
         
