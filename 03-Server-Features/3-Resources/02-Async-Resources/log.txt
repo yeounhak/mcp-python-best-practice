@@ -1,0 +1,13 @@
+=== System Log ===
+[2024-01-15 14:30:25] INFO  Server started on port 9000
+[2024-01-15 14:30:26] INFO  Resource endpoints initialized
+[2024-01-15 14:30:30] DEBUG Client connection established
+[2024-01-15 14:30:35] WARN  Large file processing detected (estimated 10s)
+[2024-01-15 14:30:35] INFO  Using async resource handler for non-blocking I/O
+[2024-01-15 14:30:45] INFO  File processing completed successfully
+[2024-01-15 14:30:50] DEBUG Client disconnected
+
+Performance Analysis:
+- Async Resources: Non-blocking I/O operations
+- Sync Resources: May block other requests during file processing
+- Recommendation: Use async for large files to maintain server responsiveness
