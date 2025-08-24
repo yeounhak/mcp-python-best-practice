@@ -1,5 +1,4 @@
 from fastmcp import FastMCP
-
 mcp = FastMCP(name="DataServer")
 
 # 문자열을 반환하는 기본 동적 리소스
