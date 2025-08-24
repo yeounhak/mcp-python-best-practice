@@ -44,7 +44,7 @@ mcp.run()
 
 **client.py**
 
-1. **라이브러리 임포트 및 Claude API 통신 함수**
+**1. 라이브러리 임포트 및 Claude API 통신 함수**
 ```python
 from fastmcp import Client
 from anthropic import AsyncAnthropic
@@ -77,7 +77,7 @@ async def send_llm_request_and_display(llm_client, conversation_history, anthrop
 - 응답을 `conversation_history`에 저장하여 대화 컨텍스트 유지
 - 텍스트 응답만 필터링하여 사용자에게 표시
 
-2. **도구 호출 처리 함수**
+**2. 도구 호출 처리 함수**
 ```python
 async def send_llm_request_and_display(llm_client, conversation_history, anthropic_tools):
     """Claude API에 요청을 보내고 응답을 화면에 출력"""
@@ -106,7 +106,7 @@ async def send_llm_request_and_display(llm_client, conversation_history, anthrop
 - 응답을 `conversation_history`에 저장하여 대화 컨텍스트 유지
 - 텍스트 응답만 필터링하여 사용자에게 표시
 
-2. **도구 호출 처리 함수**
+**2. 도구 호출 처리 함수**
 ```python
 async def send_tool_request_and_display(response, mcp_client, conversation_history):
     """도구 호출을 실행하고 결과를 대화 기록에 추가"""
@@ -139,7 +139,7 @@ async def send_tool_request_and_display(response, mcp_client, conversation_histo
 - `mcp_client.call_tool()`로 실제 MCP 서버의 도구 함수 호출
 - 도구 실행 결과를 Anthropic API 형식으로 변환하여 대화 기록에 추가
 
-3. **메인 대화 루프 및 프로그램 실행**
+**3. 메인 대화 루프 및 프로그램 실행**
 ```python
 async def main():
     llm_client = AsyncAnthropic()
