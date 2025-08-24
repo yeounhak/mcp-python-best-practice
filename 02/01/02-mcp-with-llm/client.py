@@ -19,7 +19,7 @@ async def main():
             })
 
 
-        user_input = input("You: ")
+        user_input = input("👤 User: ")
         conversation_history.append({
             "role": "user",
             "content": user_input
@@ -39,7 +39,7 @@ async def main():
         })
         for content_block in response.content:
             if content_block.type == "text":
-                print("Assistant:", content_block.text)
+                print("[🤖 Assistant:]", content_block.text)
         
         # Check if tool calls are needed
         if response.stop_reason == "tool_use":
@@ -47,7 +47,7 @@ async def main():
             
             for content_block in response.content:
                 if content_block.type == "tool_use":
-                    print(f"[Tool Request] {content_block.name}({content_block.input})")
+                    print(f"[🔧 Tool Request] {content_block.name}({content_block.input})")
                     
                     # Execute the tool call
                     tool_result = await mcp_client.call_tool(
@@ -55,7 +55,7 @@ async def main():
                         content_block.input
                     )
                     
-                    print(f"[Tool Result] {tool_result}")
+                    print(f"[✅ Tool Result] {tool_result}")
                     
                     tool_results.append({
                         "type": "tool_result",
@@ -85,7 +85,7 @@ async def main():
             # Display final response
             for content_block in final_response.content:
                 if content_block.type == "text":
-                    print("Assistant:", content_block.text)
+                    print("[🤖 Assistant:]", content_block.text)
 
 if __name__ == '__main__':
     import asyncio
