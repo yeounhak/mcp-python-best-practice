@@ -1,1 +1,12 @@
+# Python virtual environment
+.venv/
+venv/
+
+# VS Code settings
+.vscode/
+
+# Claude directories in any subfolder
+**/.claude/
+
+# Environment configuration
 .envrc
