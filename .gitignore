@@ -6,7 +6,7 @@ venv/
 .vscode/
 
 # Claude directories in any subfolder
-**/.claude/
+# **/.claude/
 
 # Environment configuration
 .envrc
