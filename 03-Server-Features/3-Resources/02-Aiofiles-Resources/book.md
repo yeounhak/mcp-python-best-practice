@@ -65,9 +65,7 @@ from fastmcp import Client
 
 
 async def open_resource_client_task(client_id: int):
-    """
-    open() 기반 리소스를 호출하는 클라이언트 작업
-    """
+    """open() 기반 리소스를 호출하는 클라이언트 작업"""
     print(f"open() 클라이언트 {client_id}: 시작")
     start_time = time.time()
     
@@ -75,15 +73,12 @@ async def open_resource_client_task(client_id: int):
         result = await client.read_resource("file://log-sync.txt")
         end_time = time.time()
         elapsed = end_time - start_time
-        print(f"open() 클라이언트 {client_id}: 완료 - 소요시간: {elapsed:.2f}초")
-        print(f"open() 클라이언트 {client_id}: 결과 길이 - {len(result)}자")
+        print(f"open() 클라이언트 {client_id}: 완료 - 소요시간: {elapsed:.2f}초"); print(f"open() 클라이언트 {client_id}: 결과 길이 - {len(result)}자")
         return result
 
 
 async def aiofiles_resource_client_task(client_id: int):
-    """
-    aiofiles 기반 리소스를 호출하는 클라이언트 작업
-    """
+    """aiofiles 기반 리소스를 호출하는 클라이언트 작업"""
     print(f"aiofiles 클라이언트 {client_id}: 시작")
     start_time = time.time()
     
@@ -91,21 +86,16 @@ async def aiofiles_resource_client_task(client_id: int):
         result = await client.read_resource("file://log.txt")
         end_time = time.time()
         elapsed = end_time - start_time
-        print(f"aiofiles 클라이언트 {client_id}: 완료 - 소요시간: {elapsed:.2f}초")
-        print(f"aiofiles 클라이언트 {client_id}: 결과 길이 - {len(result)}자")
+        print(f"aiofiles 클라이언트 {client_id}: 완료 - 소요시간: {elapsed:.2f}초"); print(f"aiofiles 클라이언트 {client_id}: 결과 길이 - {len(result)}자")
         return result
 
 
 async def main():
-    """
-    open() vs aiofiles 리소스 성능 비교 테스트
-    """
+    """open() vs aiofiles 리소스 성능 비교 테스트"""
     print("open() vs aiofiles 리소스 성능 비교 테스트를 시작합니다...\n")
     
     # open() 리소스 테스트
-    print("=" * 50)
-    print("open() 리소스 테스트 시작")
-    print("=" * 50)
+    print("=" * 50); print("open() 리소스 테스트 시작"); print("=" * 50)
     
     open_start = time.time()
     open_tasks = [open_resource_client_task(i+1) for i in range(3)]
@@ -116,15 +106,11 @@ async def main():
     print(f"\nopen() 리소스 테스트 완료! 총 소요시간: {open_elapsed:.2f}초")
     
     # 테스트 사이 대기
-    print("\n" + "="*50)
-    print("잠깐 대기 중...")
-    print("="*50)
+    print("\n" + "="*50); print("잠깐 대기 중..."); print("="*50)
     await asyncio.sleep(2)
     
     # aiofiles 리소스 테스트
-    print("=" * 50)
-    print("aiofiles 리소스 테스트 시작")
-    print("=" * 50)
+    print("=" * 50); print("aiofiles 리소스 테스트 시작"); print("=" * 50)
     
     aiofiles_start = time.time()
     aiofiles_tasks = [aiofiles_resource_client_task(i+1) for i in range(3)]
@@ -135,12 +121,8 @@ async def main():
     print(f"\naiofiles 리소스 테스트 완료! 총 소요시간: {aiofiles_elapsed:.2f}초")
     
     # 결과 요약
-    print("\n" + "="*60)
-    print("테스트 결과 요약")
-    print("="*60)
-    print(f"open() 리소스 소요시간: {open_elapsed:.2f}초")
-    print(f"aiofiles 리소스 소요시간: {aiofiles_elapsed:.2f}초")
-    print(f"성능 차이: {abs(open_elapsed - aiofiles_elapsed):.2f}초")
+    print("\n" + "="*60); print("테스트 결과 요약"); print("="*60)
+    print(f"open() 리소스 소요시간: {open_elapsed:.2f}초"); print(f"aiofiles 리소스 소요시간: {aiofiles_elapsed:.2f}초"); print(f"성능 차이: {abs(open_elapsed - aiofiles_elapsed):.2f}초")
     
     if open_elapsed > aiofiles_elapsed:
         print("aiofiles가 더 효율적입니다!")
@@ -161,27 +143,28 @@ if __name__ == '__main__':
 - `aiofiles_resource_client_task`: 비동기 파일 읽기 리소스 호출 함수
 - `asyncio.gather()`를 사용하여 동시성 테스트 수행
 - 각 테스트의 소요 시간을 측정하고 성능 비교 결과를 출력
+- 코드 간결성을 위해 연관된 print() 문을 세미콜론으로 연결하여 라인 수 최적화
 
 **log.txt**
 ```
-=== System Log ===
-[2024-01-15 14:30:25] INFO  Server started on port 9000
-[2024-01-15 14:30:26] INFO  Resource endpoints initialized
-[2024-01-15 14:30:30] DEBUG Client connection established
-[2024-01-15 14:30:35] WARN  Large file processing detected (estimated 10s)
-[2024-01-15 14:30:35] INFO  Using async resource handler for non-blocking I/O
-[2024-01-15 14:30:45] INFO  File processing completed successfully
-[2024-01-15 14:30:50] DEBUG Client disconnected
+=== 데모용 가짜 로그 파일 ===
 
-Performance Analysis:
-- Async Resources: Non-blocking I/O operations
-- Sync Resources: May block other requests during file processing
-- Recommendation: Use async for large files to maintain server responsiveness
+이 로그는 매우 긴 로그로 가정하고 있으며 파일 읽기에 1초가 걸린다고 생각하세요.
+
+실제 운영 환경에서는 이 자리에 실제 시스템 로그가 들어갑니다.
+현재는 aiofiles와 일반 open() 함수의 성능 차이를 보여주기 위한 데모 목적의 가짜 로그입니다.
+
+aiofiles 사용 시: 비동기 I/O로 다른 요청을 블록킹하지 않음
+일반 open() 사용 시: 동기 I/O로 파일 읽는 동안 다른 요청이 대기해야 함
+
+이런 차이를 확인하기 위해 동시에 여러 클라이언트가 이 파일을 읽어서 
+성능 비교 테스트를 진행합니다.
 ```
 
-- 테스트에 사용되는 샘플 로그 파일
-- 시스템 로그 포맷과 성능 분석 내용을 포함
-- 비동기 I/O의 중요성에 대한 권장사항 제공
+- 성능 비교 테스트를 위한 데모용 가짜 로그 파일
+- 실제 운영 환경에서는 실제 시스템 로그가 위치할 자리임을 명시
+- aiofiles와 일반 open() 함수 간의 성능 차이 설명 포함
+- 파일 읽기에 1초가 걸린다는 시뮬레이션 조건 설명
 
 ## 🚀 실행
 
@@ -234,11 +217,11 @@ open() 클라이언트 1: 시작
 open() 클라이언트 2: 시작
 open() 클라이언트 3: 시작
 open() 클라이언트 1: 완료 - 소요시간: 3.02초
-open() 클라이언트 1: 결과 길이 - 432자
+open() 클라이언트 1: 결과 길이 - 278자
 open() 클라이언트 2: 완료 - 소요시간: 3.04초
-open() 클라이언트 2: 결과 길이 - 432자
+open() 클라이언트 2: 결과 길이 - 278자
 open() 클라이언트 3: 완료 - 소요시간: 3.05초
-open() 클라이언트 3: 결과 길이 - 432자
+open() 클라이언트 3: 결과 길이 - 278자
 
 open() 리소스 테스트 완료! 총 소요시간: 3.06초
 
@@ -253,11 +236,11 @@ aiofiles 클라이언트 1: 시작
 aiofiles 클라이언트 2: 시작
 aiofiles 클라이언트 3: 시작
 aiofiles 클라이언트 1: 완료 - 소요시간: 1.03초
-aiofiles 클라이언트 1: 결과 길이 - 432자
+aiofiles 클라이언트 1: 결과 길이 - 278자
 aiofiles 클라이언트 2: 완료 - 소요시간: 1.04초
-aiofiles 클라이언트 2: 결과 길이 - 432자
+aiofiles 클라이언트 2: 결과 길이 - 278자
 aiofiles 클라이언트 3: 완료 - 소요시간: 1.05초
-aiofiles 클라이언트 3: 결과 길이 - 432자
+aiofiles 클라이언트 3: 결과 길이 - 278자
 
 aiofiles 리소스 테스트 완료! 총 소요시간: 1.06초
 
