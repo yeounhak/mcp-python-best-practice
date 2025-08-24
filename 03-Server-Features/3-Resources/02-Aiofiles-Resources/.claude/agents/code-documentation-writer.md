@@ -49,15 +49,13 @@ Your primary responsibilities:
    **### 주요 파일 설명** (REQUIRED subsection)
    - MUST include actual code snippets directly from the files being described
    - Code examples should show the key functionality and structure of each file
-   - Combine code blocks with bullet-point explanations to provide comprehensive understanding
-   - For code files around 30 lines or less, show and explain the code as a single block
-   - For code files around 60 lines or more, break code into logical sections with numbered blocks (**1. 제목**, **2. 제목**, **3. 제목**...)
-   - Each block should focus on a specific functionality with clear explanations
-   - IMPORTANT: Use **1. 제목** format (bold with number inside) NOT 1. **제목** to avoid markdown auto-numbering issues
+   - Always present each file's complete code as a single block first, then provide explanations
+   - DO NOT break code into multiple sections - show the entire file contents in one code block
+   - After showing the complete code, provide bullet-point explanations about the key functionality
    - Skip or minimize explanation of common boilerplate code like FastMCP initialization (`from fastmcp import FastMCP`, `mcp = FastMCP(name="...")`, `mcp.run()`) and standard Python async execution patterns (`if __name__ == '__main__': asyncio.run(main())`)
    - Focus documentation on the unique business logic, tool implementations, and core functionality rather than standard framework setup code
    
-   **Example for simple files:**
+   **Example format:**
      ```markdown
      **server.py**
      ```python
@@ -75,48 +73,6 @@ Your primary responsibilities:
      - FastMCP를 사용하여 `CalculatorServer` 이름의 MCP 서버 생성
      - `@mcp.tool` 데코레이터로 `add` 함수를 MCP 도구로 등록
      - ...
-     ```
-   
-   **Example for complex files (break into numbered blocks):**
-     ```markdown
-     **client.py**
-
-     **1. 라이브러리 임포트 및 Claude API 통신 함수**
-     ```python
-     from fastmcp import Client
-     from anthropic import AsyncAnthropic
-
-     async def send_llm_request_and_display(llm_client, conversation_history, anthropic_tools):
-         """Claude API에 요청을 보내고 응답을 화면에 출력"""
-         response = await llm_client.messages.create(
-             model="claude-sonnet-4-20250514",
-             max_tokens=1000,
-             messages=conversation_history,
-             tools=anthropic_tools,
-         )
-         return response
-     ```
-     - FastMCP Client와 Anthropic AsyncAnthropic 라이브러리 임포트
-     - Claude API에 메시지를 전송하고 응답을 화면에 출력하는 함수
-
-     **2. 도구 호출 처리 함수**
-     ```python
-     async def send_tool_request_and_display(response, mcp_client, conversation_history):
-         """도구 호출을 실행하고 결과를 대화 기록에 추가"""
-         # tool processing logic here
-     ```
-     - 도구 호출 요청을 처리하고 결과를 반환하는 함수
-
-     **3. 메인 대화 루프 및 프로그램 실행**
-     ```python
-     async def main():
-         # main logic here
-     
-     if __name__ == '__main__':
-         import asyncio
-         asyncio.run(main())
-     ```
-     - 전체 대화 흐름을 관리하는 메인 함수
      ```
 
 6. **Execution Section**: MUST include these exact subsections:
