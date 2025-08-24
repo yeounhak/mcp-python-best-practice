@@ -43,10 +43,104 @@ mcp.run()
 - `mcp.run()`으로 서버를 시작하여 클라이언트 연결 대기
 
 **client.py**
+
+1. **라이브러리 임포트 및 Claude API 통신 함수**
 ```python
 from fastmcp import Client
 from anthropic import AsyncAnthropic
 
+async def send_llm_request_and_display(llm_client, conversation_history, anthropic_tools):
+    """Claude API에 요청을 보내고 응답을 화면에 출력"""
+    response = await llm_client.messages.create(
+        model="claude-sonnet-4-20250514",
+        max_tokens=1000,
+        messages=conversation_history,
+        tools=anthropic_tools,
+    )
+    
+    # 대화 기록에 응답 저장
+    conversation_history.append({
+        "role": "assistant",
+        "content": response.content
+    })
+    
+    # 텍스트 응답 출력
+    for content_block in response.content:
+        if content_block.type == "text":
+            print("[🤖 Assistant:]", content_block.text)
+    
+    return response
+```
+- FastMCP Client와 Anthropic AsyncAnthropic 라이브러리 임포트
+- Claude API에 메시지를 전송하고 응답을 화면에 출력하는 함수
+- `llm_client.messages.create()`로 Claude API 호출하여 대화형 응답 생성
+- 응답을 `conversation_history`에 저장하여 대화 컨텍스트 유지
+- 텍스트 응답만 필터링하여 사용자에게 표시
+
+2. **도구 호출 처리 함수**
+```python
+async def send_llm_request_and_display(llm_client, conversation_history, anthropic_tools):
+    """Claude API에 요청을 보내고 응답을 화면에 출력"""
+    response = await llm_client.messages.create(
+        model="claude-sonnet-4-20250514",
+        max_tokens=1000,
+        messages=conversation_history,
+        tools=anthropic_tools,
+    )
+    
+    # 대화 기록에 응답 저장
+    conversation_history.append({
+        "role": "assistant",
+        "content": response.content
+    })
+    
+    # 텍스트 응답 출력
+    for content_block in response.content:
+        if content_block.type == "text":
+            print("[🤖 Assistant:]", content_block.text)
+    
+    return response
+```
+- Claude API에 메시지를 전송하고 응답을 화면에 출력하는 함수
+- `llm_client.messages.create()`로 Claude API 호출하여 대화형 응답 생성
+- 응답을 `conversation_history`에 저장하여 대화 컨텍스트 유지
+- 텍스트 응답만 필터링하여 사용자에게 표시
+
+2. **도구 호출 처리 함수**
+```python
+async def send_tool_request_and_display(response, mcp_client, conversation_history):
+    """도구 호출을 실행하고 결과를 대화 기록에 추가"""
+    tool_results = []
+    
+    for content_block in response.content:
+        if content_block.type == "tool_use":
+            print(f"[🔧 Tool Request] {content_block.name}({content_block.input})")
+            
+            # MCP 서버에서 도구 실행
+            tool_result = await mcp_client.call_tool(
+                content_block.name,
+                content_block.input
+            )
+            
+            print(f"[✅ Tool Result] {tool_result}")
+            
+            # Anthropic API 형식으로 변환
+            tool_results.append({
+                "type": "tool_result",
+                "tool_use_id": content_block.id,
+                "content": str(tool_result)
+            })
+    
+    # 도구 결과를 대화 기록에 추가
+    conversation_history.append({"role": "user", "content": tool_results})
+```
+- 도구 호출 요청을 처리하고 결과를 반환하는 함수
+- Claude 응답에서 `tool_use` 타입 컨텐츠 블록을 감지하여 도구 호출 실행
+- `mcp_client.call_tool()`로 실제 MCP 서버의 도구 함수 호출
+- 도구 실행 결과를 Anthropic API 형식으로 변환하여 대화 기록에 추가
+
+3. **메인 대화 루프 및 프로그램 실행**
+```python
 async def main():
     llm_client = AsyncAnthropic()
     conversation_history = []
@@ -63,22 +157,26 @@ async def main():
             user_input = input("[👤 User]: ")
             conversation_history.append({"role": "user", "content": user_input})
             
-            response = await llm_client.messages.create(
-                model="claude-sonnet-4-20250514",
-                max_tokens=1000,
-                messages=conversation_history,
-                tools=anthropic_tools,
-            )
-            
-            if response.stop_reason == "tool_use":
-                # 도구 호출 실행 및 결과 처리
-                tool_result = await mcp_client.call_tool(...)
+            while True:
+                response = await send_llm_request_and_display(
+                    llm_client, conversation_history, anthropic_tools
+                )
+                
+                if response.stop_reason == "tool_use":
+                    await send_tool_request_and_display(
+                        response, mcp_client, conversation_history
+                    )
+                else:
+                    break
+
+if __name__ == '__main__':
+    import asyncio
+    asyncio.run(main())
 ```
-- Anthropic Claude API와 FastMCP Client를 통합하여 대화형 시스템 구현
-- `mcp_client.list_tools()`로 사용 가능한 MCP 도구 조회 후 Anthropic API 형식으로 변환
-- 사용자 입력을 `conversation_history`에 저장하여 대화 컨텍스트 유지
-- Claude가 도구 호출이 필요하다고 판단하면 자동으로 MCP 서버의 함수 실행
-- `async/await` 패턴으로 비동기 API 호출과 실시간 사용자 인터랙션 처리
+- 전체 대화 흐름을 관리하는 메인 함수
+- MCP 서버 연결 후 사용 가능한 도구를 Anthropic API 형식으로 변환
+- 사용자 입력을 받아 Claude API 호출 및 도구 실행을 반복 처리
+- 도구 호출이 필요한 경우 자동으로 처리하고, 그렇지 않으면 다음 사용자 입력 대기
 
 ## 🚀 실행
 
