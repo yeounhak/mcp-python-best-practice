@@ -9,9 +9,9 @@
 
 이 예제를 통해 MCP에서 도구의 상태를 런타임에 동적으로 변경하고, 클라이언트가 이러한 변경사항을 감지하여 처리하는 방법을 학습할 수 있습니다.
 
-> 🔗 **상세 코드 및 예제**: [https://github.com/yeounhak/mcp-python-best-practice/03-Server-Features/1-Tools/04-Updated-Tools][github-repo]
+> 🔗 **상세 코드 및 예제**: [https://github.com/yeounhak/mcp-python-best-practice/03-Server-Features/1-Tools/04-Dynamic-Tool-Activation][github-repo]
 
-[github-repo]: https://github.com/yeounhak/mcp-python-best-practice/03-Server-Features/1-Tools/04-Updated-Tools
+[github-repo]: https://github.com/yeounhak/mcp-python-best-practice/03-Server-Features/1-Tools/04-Dynamic-Tool-Activation
 
 ## 📁 파일 구성
 
