@@ -13,7 +13,7 @@ async def message_handler(message):
 
 async def main():
     async with Client(
-            transport_url="http://localhost:9000",
+            "http://0.0.0.0:9000/mcp",
             message_handler=message_handler,
         ) as client:
         tools = await client.list_tools()

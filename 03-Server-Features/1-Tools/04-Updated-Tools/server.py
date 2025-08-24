@@ -13,4 +13,8 @@ def add_tool(a: int, b: int) -> int:
     """Adds two integer numbers together."""
     return a + b
 
-mcp.run()
+mcp.run(
+    transport="http",
+    host="0.0.0.0",
+    port=9000,
+)
