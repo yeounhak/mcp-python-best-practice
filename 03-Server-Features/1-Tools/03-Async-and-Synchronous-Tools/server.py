@@ -28,12 +28,16 @@ def _cpu_intensive_task() -> str:
         이 함수는 sleep()을 사용하여 CPU 집약적인 작업을 시뮬레이션합니다.
         실제 환경에서는 복잡한 계산이나 데이터 처리 작업을 의미할 수 있습니다.
     """
-    sleep(CPU_TASK_DURATION)
-    return f"{CPU_TASK_DURATION}초 동안 CPU 집약적 작업을 완료했습니다."
+    # sleep(CPU_TASK_DURATION)
+    c = 0
+    for i in range(100000000):
+        c += 1
+    return f"{c}번 CPU 집약적 작업을 완료했습니다."
 
 
 @mcp.tool
 def sync_tool() -> str:
+    print("동기 작업을 받았습니다.")
     """
     동기 방식 CPU 집약적 작업 도구
     
@@ -49,6 +53,7 @@ def sync_tool() -> str:
 
 @mcp.tool
 async def async_tool() -> str:
+    print("비동기 작업을 받았습니다.")
     """
     비동기 방식 CPU 집약적 작업 도구
     
